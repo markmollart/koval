@@ -1,10 +1,8 @@
-const _ = require('lodash')
-const path = require('path')
-const { createFilePath } = require('gatsby-source-filesystem')
-const { paginate } = require('gatsby-awesome-pagination')
+const path = require('path');
+const { createFilePath } = require('gatsby-source-filesystem');
+const { paginate } = require('gatsby-awesome-pagination');
 
-const getOnlyPublished = edges =>
-  _.filter(edges, ({ node }) => node.status === 'publish')
+const getOnlyPublished = edges => edges.filter(({ node }) => node.status === 'publish');
 
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
@@ -41,7 +39,7 @@ exports.createPages = ({ actions, graphql }) => {
           : allPages
 
       // Call `createPage()` once per WordPress page
-      _.each(pages, ({ node: page }) => {
+      pages.forEach(({ node: page }) => {
         createPage({
           path: `/${page.slug}/`,
           component: pageTemplate,
@@ -83,7 +81,7 @@ exports.createPages = ({ actions, graphql }) => {
           : allPosts
 
       // Iterate over the array of posts
-      _.each(posts, ({ node: post }) => {
+      posts.forEach(({ node: post }) => {
         // Create the Gatsby page for this WordPress post
         createPage({
           path: `/${post.slug}/`,
@@ -127,7 +125,7 @@ exports.createPages = ({ actions, graphql }) => {
       const categoriesTemplate = path.resolve(`./src/templates/category.js`)
 
       // Create a Gatsby page for each WordPress Category
-      _.each(result.data.allWordpressCategory.edges, ({ node: cat }) => {
+      result.data.allWordpressCategory.edges.forEach(({ node: cat }) => {
         createPage({
           path: `/categories/${cat.slug}/`,
           component: categoriesTemplate,
@@ -160,7 +158,7 @@ exports.createPages = ({ actions, graphql }) => {
 
       const authorTemplate = path.resolve(`./src/templates/author.js`)
 
-      _.each(result.data.allWordpressWpUsers.edges, ({ node: author }) => {
+      result.data.allWordpressWpUsers.edges.forEach(({ node: author }) => {
         createPage({
           path: `/author/${author.slug}`,
           component: authorTemplate,
