@@ -1,2 +1,2 @@
 # Netlify redirects
-http://www.oldurl.com/* http://www.newurl.com/:splat 301!
+http://musing-clarke-b097bd.netlify.com/* http://capitalpartners.birdbrain.io/:splat 301!
