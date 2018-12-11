@@ -1,0 +1,2 @@
+# Netlify redirects
+http://www.oldurl.com/* http://www.newurl.com/:splat 301!
