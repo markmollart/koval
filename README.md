@@ -11,7 +11,6 @@ This starter is forked from the [gatsby-starter-netlify-cms](https://github.com/
 * Nested pages / categories will not render with nested pages
   - A WordPress page like `/about/team/` will render on Gatsby as `/team/`
   - Likewise for categories
-  - Discussion here https://github.com/GatsbyCentral/gatsby-starter-wordpress/issues/24
 
 ## CSS Processing
 
