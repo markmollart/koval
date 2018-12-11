@@ -4,7 +4,15 @@ module.exports = {
   },
   plugins: [
     'gatsby-plugin-react-helmet',
-    'gatsby-plugin-sass',
+    {
+      resolve: 'gatsby-plugin-sass',
+      options: {
+        data: '@import "resources.scss";',
+        includePaths: [
+          'src/sass/base',
+        ],
+      },
+    },
     {
       resolve: 'gatsby-source-wordpress',
       options: {

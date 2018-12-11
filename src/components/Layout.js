@@ -1,5 +1,6 @@
-import React from 'react'
-import Helmet from 'react-helmet'
+import React from 'react';
+import Helmet from 'react-helmet';
+import '../sass/global/styles.scss';
 
 import Navbar from './Navbar'
 import './all.sass'
