@@ -1,8 +1,8 @@
 {
-  "name": "gatsby-starter-wordpress",
-  "description": "Gatsby v2 starter for WordPress",
-  "version": "0.1.0",
-  "author": "GatsbyCentral.com",
+  "name": "koval",
+  "description": "Gatsby WordPress",
+  "version": "1.0",
+  "author": "//",
   "dependencies": {
     "gatsby": "^2.0.0",
     "gatsby-awesome-pagination": "^0.3.3",
