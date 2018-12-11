@@ -1,7 +1,6 @@
-import React from 'react'
-import { Link, StaticQuery, graphql } from 'gatsby'
-import github from '../images/github-icon.svg'
-import logo from '../images/logo.svg'
+import React from 'react';
+import { Link, StaticQuery, graphql } from 'gatsby';
+import logo from '../images/logo.png';
 
 const Navbar = () => (
   <StaticQuery
@@ -37,18 +36,6 @@ const Navbar = () => (
                 {edge.node.title}
               </Link>
             ))}
-          </div>
-          <div className="navbar-end">
-            <a
-              className="navbar-item"
-              href="https://github.com/GatsbyCentral/gatsby-starter-wordpress"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="icon">
-                <img src={github} alt="Github" />
-              </span>
-            </a>
           </div>
         </div>
       </nav>
