@@ -29,9 +29,28 @@ module.exports = {
         verboseOutput: false,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: 'src',
+        path: `${__dirname}/src/`,
+      },
+    },
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
     'gatsby-plugin-purgecss',
+    {
+      resolve: 'gatsby-plugin-manifest',
+      options: {
+        name: 'Koval - Gatsby Wordpress',
+        short_name: 'Koval',
+        start_url: '/',
+        background_color: '#000000',
+        theme_color: '#000000',
+        display: 'standalone',
+        icon: 'src/images/logo.png',
+      },
+    },
     'gatsby-plugin-offline',
     'gatsby-plugin-brotli',
     'gatsby-plugin-netlify', // make sure to keep it last in the array
