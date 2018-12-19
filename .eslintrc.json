@@ -8,6 +8,7 @@
     "react/require-default-props": "off",
     "react/prop-types": "off",
     "react/no-danger": "off",
+    "react/forbid-prop-types": "off",
     "arrow-body-style": "off"
   },
   "settings": {

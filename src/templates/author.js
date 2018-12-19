@@ -1,26 +1,27 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
-import Layout from '../components/Layout'
-import PostList from '../components/PostList'
+import React from 'react';
+import { graphql } from 'gatsby';
+import Layout from '../components/Layout';
+import SEO from '../components/SEO';
+import PostList from '../components/PostList';
 
 const Author = props => {
   const { data } = props
-  const { authored_wordpress__POST, name } = data.wordpressWpUsers
-  const totalCount =
-    (authored_wordpress__POST && authored_wordpress__POST.length) || 0
+  const { authorsPosts, name } = data.wordpressWpUsers
+  const totalCount = (authorsPosts && authorsPosts.length) || 0
   const { title: siteTitle } = data.site.siteMetadata
   const title = `${totalCount} post${totalCount === 1 ? '' : 's'} by ${name}`
 
   // The `authored_wordpress__POST` returns a simple array instead of an array
   // of edges / nodes. We therefore need to convert the array here.
-  const posts = authored_wordpress__POST.map(post => ({
+  const posts = authorsPosts.map(post => ({
     node: post,
   }))
 
   return (
     <Layout>
-      <Helmet title={`${name} | ${siteTitle}`} />
+      <SEO
+        title={`${name} | ${siteTitle}`}
+      />
       <PostList posts={posts} title={title} />
     </Layout>
   )
@@ -37,7 +38,7 @@ export const pageQuery = graphql`
     }
     wordpressWpUsers(id: { eq: $id }) {
       name
-      authored_wordpress__POST {
+      authorsPosts: authored_wordpress__POST {
         ...PostListFields
       }
     }

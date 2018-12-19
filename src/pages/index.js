@@ -1,8 +1,8 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import { graphql } from 'gatsby';
 import * as AcfLayout from '../acf';
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 
 
 const AcfComponent = ({ item, location, componentName }) => {
@@ -19,6 +19,10 @@ const Index = ({ data, location }) => {
   const { page } = data;
   const {
     pageTitle,
+    yoast: {
+      metaTitle,
+      metaDescription
+    },
     acf: {
       layout
     }
@@ -26,7 +30,10 @@ const Index = ({ data, location }) => {
   const { title: siteTitle } = data.site.siteMetadata
   return (
     <Layout>
-      <Helmet title={`${pageTitle} | ${siteTitle}`} />
+      <SEO
+        title={metaTitle || `${pageTitle} | ${siteTitle}`}
+        desc={metaDescription}
+      />
       {layout && layout.map(item => {
         const layoutComponentName = item.internal.type.replace('WordPressAcf_','');
         return (
@@ -53,6 +60,10 @@ export const pageQuery = graphql`
     }
     page: wordpressPage(slug: { eq: "home" }) {
       pageTitle: title
+      yoast {
+        metaTitle: title,
+        metaDescription: metadesc
+      },
       acf {
         layout: layout_page {
           ... on WordPressAcf_IntroSection {

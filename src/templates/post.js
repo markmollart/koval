@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Helmet from 'react-helmet'
-import { graphql, Link } from 'gatsby'
-import Layout from '../components/Layout'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { graphql, Link } from 'gatsby';
+import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 
 export const BlogPostTemplate = ({
   content,
@@ -53,17 +53,21 @@ BlogPostTemplate.propTypes = {
 }
 
 const BlogPost = ({ data }) => {
-  const { wordpressPost: post } = data
-
+  const { wordpressPost: post, site } = data;
+  const { title, content, yoast, categories, date, author } = post;
+  const { title: siteTitle } = site.siteMetadata;
   return (
     <Layout>
-      <Helmet title={`${post.title} | Blog`} />
+      <SEO
+        title={`${yoast.metaTitle || title} | ${siteTitle}`}
+        desc={yoast.metaDescription}
+      />
       <BlogPostTemplate
-        content={post.content}
-        categories={post.categories}
-        title={post.title}
-        date={post.date}
-        author={post.author}
+        content={content}
+        categories={categories}
+        title={title}
+        date={date}
+        author={author}
       />
     </Layout>
   )
@@ -86,6 +90,11 @@ export const pageQuery = graphql`
     title
   }
   query BlogPostByID($id: String!) {
+    site {
+      siteMetadata {
+        title
+      }
+    }
     wordpressPost(id: { eq: $id }) {
       id
       title
@@ -99,6 +108,10 @@ export const pageQuery = graphql`
       author {
         name
         slug
+      },
+      yoast {
+        metaTitle: title,
+        metaDescription: metadesc
       }
     }
   }

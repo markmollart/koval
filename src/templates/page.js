@@ -1,7 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { graphql } from 'gatsby'
-import Layout from '../components/Layout'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { graphql } from 'gatsby';
+import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 
 export const PageTemplate = ({ title, content }) => {
   return (
@@ -31,11 +32,16 @@ PageTemplate.propTypes = {
 }
 
 const Page = ({ data }) => {
-  const { wordpressPage: page } = data
-
+  const { wordpressPage: page, site } = data;
+  const { title, content, yoast } = page;
+  const { title: siteTitle } = site.siteMetadata;
   return (
     <Layout>
-      <PageTemplate title={page.title} content={page.content} />
+      <SEO
+        title={`${yoast.metaTitle || title} | ${siteTitle}`}
+        desc={yoast.metaDescription}
+      />
+      <PageTemplate title={title} content={content} />
     </Layout>
   )
 }
@@ -48,9 +54,18 @@ export default Page
 
 export const pageQuery = graphql`
   query PageById($id: String!) {
+    site {
+      siteMetadata {
+        title
+      }
+    }
     wordpressPage(id: { eq: $id }) {
       title
-      content
+      content,
+      yoast {
+        metaTitle: title,
+        metaDescription: metadesc
+      }
     }
   }
 `
