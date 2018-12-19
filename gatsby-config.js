@@ -5,6 +5,7 @@ require('dotenv').config({
 const {
   NODE_ENV,
   IS_STAGING,
+  BASE_URL,
   WORDPRESS_URL,
   WORDPRESS_PROTOCOL,
   JWT_USER,
@@ -26,7 +27,7 @@ if (!IS_STAGING && NODE_ENV !== 'development') {
 }
 
 // Env variable check
-const requiredEnvVariables = ['WORDPRESS_URL', 'WORDPRESS_PROTOCOL', 'JWT_USER', 'JWT_PASSWORD'];
+const requiredEnvVariables = ['BASE_URL', 'WORDPRESS_URL', 'WORDPRESS_PROTOCOL', 'JWT_USER', 'JWT_PASSWORD'];
 requiredEnvVariables.map((item) => {
   if (!process.env[item]) {
     throw Error(`Set ${item} env variable`);
@@ -66,6 +67,21 @@ module.exports = {
         },
         // Set to true to debug endpoints on 'gatsby build'
         verboseOutput: false,
+        includedRoutes: [
+          "/*/*/posts",
+          "/*/*/pages",
+          "/*/*/media",
+          "/*/*/categories",
+          "/*/*/tags",
+          "/*/*/taxonomies",
+          "/*/*/users",
+          "/*/*/users",
+          "/acf/v2/options",
+          "/jwt-auth/**",
+          "/yoast/**",
+          "/menus/**",
+          "/wp-api-menus/**",
+        ]
       },
     },
     {
@@ -76,14 +92,11 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-html-attributes',
+      resolve: `gatsby-plugin-canonical-urls`,
       options: {
-        lang: 'en'
-      }
+        siteUrl: BASE_URL,
+      },
     },
-    'gatsby-plugin-sharp',
-    'gatsby-transformer-sharp',
-    'gatsby-plugin-purgecss',
     {
       resolve: 'gatsby-plugin-robots-txt',
       options: {
@@ -92,6 +105,9 @@ module.exports = {
         configFile: IS_STAGING ? 'robots-txt.staging.js' : 'robots-txt.production.js'
       }
     },
+    'gatsby-plugin-sharp',
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-purgecss',
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
