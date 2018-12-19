@@ -14,6 +14,7 @@ const {
   PWA_SHORT_NAME = 'Koval',
   PWA_BACKGROUND_COLOR = '#000000',
   PWA_THEME_COLOR = '#000000',
+  gatsby_executing_command: GATSBY_CMD
 } = process.env;
 
 // Robots txt warning on build
@@ -26,18 +27,21 @@ if (!IS_STAGING && NODE_ENV !== 'development') {
   console.log("\x1b[42m" , 'visible to search engines, change IS_STAGING env variable to prevent this');
 }
 
-// Env variable check
-const requiredEnvVariables = ['BASE_URL', 'WORDPRESS_URL', 'WORDPRESS_PROTOCOL', 'JWT_USER', 'JWT_PASSWORD'];
-requiredEnvVariables.map((item) => {
-  if (!process.env[item]) {
-    throw Error(`Set ${item} env variable`);
-  }
-  return null;
-});
+if (GATSBY_CMD !== 'serve') {
+  // Env variable check
+  const requiredEnvVariables = ['BASE_URL', 'WORDPRESS_URL', 'WORDPRESS_PROTOCOL', 'JWT_USER', 'JWT_PASSWORD'];
+  requiredEnvVariables.map((item) => {
+    if (!process.env[item]) {
+      throw Error(`Set ${item} env variable`);
+    }
+    return null;
+  });
+}
 
 module.exports = {
   siteMetadata: {
     title: SITE_NAME,
+    siteUrl: BASE_URL
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -85,17 +89,37 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
         name: 'src',
         path: `${__dirname}/src/`,
       },
     },
     {
-      resolve: `gatsby-plugin-canonical-urls`,
+      resolve: 'gatsby-plugin-canonical-urls',
       options: {
         siteUrl: BASE_URL,
       },
+    },
+    {
+      resolve: 'gatsby-plugin-sitemap',
+      options: {
+        output: '/sitemap.xml',
+        query: `{
+          site {
+            siteMetadata {
+              siteUrl
+            }
+          }
+          allSitePage {
+            edges {
+              node {
+                path
+              }
+            }
+          }
+        }`
+      }
     },
     {
       resolve: 'gatsby-plugin-robots-txt',
