@@ -5,22 +5,36 @@ require('dotenv').config({
 const {
   NODE_ENV,
   IS_STAGING,
-  BASE_URL = "(set BASE_URL env variable)"
+  WORDPRESS_URL,
+  WORDPRESS_PROTOCOL,
+  SITE_NAME = 'Koval - Gatsby Wordpress',
+  PWA_SHORT_NAME = 'Koval',
+  PWA_BACKGROUND_COLOR = '#000000',
+  PWA_THEME_COLOR = '#000000',
 } = process.env;
 
 // Robots txt warning on build
 if (IS_STAGING && NODE_ENV !== 'development') {
   // eslint-disable-next-line
-  console.log("\x1b[41m" ,`${BASE_URL} is blocking search engines, change IS_STAGING env variable to prevent this`);
+  console.log("\x1b[41m" , 'blocking search engines, change IS_STAGING env variable to prevent this');
 }
 if (!IS_STAGING && NODE_ENV !== 'development') {
   // eslint-disable-next-line
-  console.log("\x1b[42m" ,`${BASE_URL} is visible to search engines, change IS_STAGING env variable to prevent this`);
+  console.log("\x1b[42m" , 'visible to search engines, change IS_STAGING env variable to prevent this');
 }
+
+// Env variable check
+const requiredEnvVariables = ['WORDPRESS_URL', 'WORDPRESS_PROTOCOL'];
+requiredEnvVariables.map((item) => {
+  if (!process.env[item]) {
+    throw Error(`Set ${item} env variable`);
+  }
+  return null;
+});
 
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby + WordPress Starter',
+    title: SITE_NAME,
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -37,11 +51,11 @@ module.exports = {
       resolve: 'gatsby-source-wordpress',
       options: {
         // The base url to your WP site.
-        baseUrl: 'capitalpartners.wp.birdbrain.io',
+        baseUrl: WORDPRESS_URL,
         // WP.com sites set to true, WP.org set to false
         hostingWPCOM: false,
         // The protocol. This can be http or https.
-        protocol: 'https',
+        protocol: WORDPRESS_PROTOCOL,
         // Use 'Advanced Custom Fields' Wordpress plugin
         useACF: true,
         auth: {},
@@ -76,11 +90,11 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        name: 'Koval - Gatsby Wordpress',
-        short_name: 'Koval',
+        name: SITE_NAME,
+        short_name: PWA_SHORT_NAME,
         start_url: '/',
-        background_color: '#000000',
-        theme_color: '#000000',
+        background_color: PWA_BACKGROUND_COLOR,
+        theme_color: PWA_THEME_COLOR,
         display: 'standalone',
         icon: 'src/images/logo.png',
       },

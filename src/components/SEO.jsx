@@ -9,7 +9,7 @@ import { Twitter } from './SEO/Twitter';
 export default class SEO extends Component {
   render() {
     const { title, desc, banner, post } = this.props;
-    const { BASE_URL: siteUrl } = process.env;
+    const { BASE_URL: siteUrl, PWA_SHORT_NAME: shortName } = process.env;
     return (
       <StaticQuery
         query={graphql`
@@ -18,7 +18,6 @@ export default class SEO extends Component {
               options {
                 defaultMetaTitle,
                 defaultMetaDescription,
-                pwaShortName,
                 openGraphImage,
                 logo,
                 twitterUsername
@@ -31,7 +30,6 @@ export default class SEO extends Component {
             options: {
               defaultMetaTitle,
               defaultMetaDescription,
-              pwaShortName: shortName,
               siteLanguage = 'en',
               twitter,
               logo,
