@@ -7,6 +7,8 @@ const {
   IS_STAGING,
   WORDPRESS_URL,
   WORDPRESS_PROTOCOL,
+  JWT_USER,
+  JWT_PASSWORD,
   SITE_NAME = 'Koval - Gatsby Wordpress',
   PWA_SHORT_NAME = 'Koval',
   PWA_BACKGROUND_COLOR = '#000000',
@@ -24,7 +26,7 @@ if (!IS_STAGING && NODE_ENV !== 'development') {
 }
 
 // Env variable check
-const requiredEnvVariables = ['WORDPRESS_URL', 'WORDPRESS_PROTOCOL'];
+const requiredEnvVariables = ['WORDPRESS_URL', 'WORDPRESS_PROTOCOL', 'JWT_USER', 'JWT_PASSWORD'];
 requiredEnvVariables.map((item) => {
   if (!process.env[item]) {
     throw Error(`Set ${item} env variable`);
@@ -58,7 +60,10 @@ module.exports = {
         protocol: WORDPRESS_PROTOCOL,
         // Use 'Advanced Custom Fields' Wordpress plugin
         useACF: true,
-        auth: {},
+        auth: {
+          jwt_user: JWT_USER,
+          jwt_pass: JWT_PASSWORD,
+        },
         // Set to true to debug endpoints on 'gatsby build'
         verboseOutput: false,
       },
