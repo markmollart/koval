@@ -1,3 +1,23 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+const {
+  NODE_ENV,
+  IS_STAGING,
+  BASE_URL = "(set BASE_URL env variable)"
+} = process.env;
+
+// Robots txt warning on build
+if (IS_STAGING && NODE_ENV !== 'development') {
+  // eslint-disable-next-line
+  console.log("\x1b[41m" ,`${BASE_URL} is blocking search engines, change IS_STAGING env variable to prevent this`);
+}
+if (!IS_STAGING && NODE_ENV !== 'development') {
+  // eslint-disable-next-line
+  console.log("\x1b[42m" ,`${BASE_URL} is visible to search engines, change IS_STAGING env variable to prevent this`);
+}
+
 module.exports = {
   siteMetadata: {
     title: 'Gatsby + WordPress Starter',
@@ -45,6 +65,14 @@ module.exports = {
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
     'gatsby-plugin-purgecss',
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: null,
+        sitemap: null,
+        configFile: IS_STAGING ? 'robots-txt.staging.js' : 'robots-txt.production.js'
+      }
+    },
     {
       resolve: 'gatsby-plugin-manifest',
       options: {

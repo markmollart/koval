@@ -9,7 +9,7 @@ import { Twitter } from './SEO/Twitter';
 export default class SEO extends Component {
   render() {
     const { title, desc, banner, post } = this.props;
-    const { SITE_URL: siteUrl } = process.env;
+    const { BASE_URL: siteUrl } = process.env;
     return (
       <StaticQuery
         query={graphql`
