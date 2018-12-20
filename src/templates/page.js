@@ -44,7 +44,8 @@ PageTemplate.propTypes = {
 
 const Page = ({ data, location }) => {
   const { wordpressPage: page, site } = data;
-  const { title, content, yoast, acf: { layout } } = page;
+  const { title, content, yoast, acf = {} } = page;
+  const { layout } = acf;
   const { title: siteTitle } = site.siteMetadata;
   return (
     <Layout>
