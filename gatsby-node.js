@@ -1,8 +1,14 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
 const path = require('path');
 const { createFilePath } = require('gatsby-source-filesystem');
 const { paginate } = require('gatsby-awesome-pagination');
 
 const getOnlyPublished = edges => edges.filter(({ node }) => node.status === 'publish');
+
+const { BLOG_SLUG, HOME_SLUG } = process.env;
 
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
@@ -37,11 +43,14 @@ exports.createPages = ({ actions, graphql }) => {
         process.env.NODE_ENV === 'production'
           ? getOnlyPublished(allPages)
           : allPages
-
+      if (!pages.find(({ node: page }) => page.slug === HOME_SLUG)) {
+        console.log("\x1b[41m%s\x1b[0m", `Please create page with slug '${HOME_SLUG}'`);
+        process.exit(1);
+      }
       // Call `createPage()` once per WordPress page
       pages.forEach(({ node: page }) => {
         createPage({
-          path: `/${page.slug}/`,
+          path: page.slug === HOME_SLUG ? '/' : `/${page.slug}/`,
           component: pageTemplate,
           context: {
             id: page.id,
@@ -97,7 +106,7 @@ exports.createPages = ({ actions, graphql }) => {
         createPage,
         items: posts,
         itemsPerPage: 10,
-        pathPrefix: ({ pageNumber }) => (pageNumber === 0 ? `/` : `/page`),
+        pathPrefix: ({ pageNumber }) => (pageNumber === 0 ? `/${BLOG_SLUG}` : `/${BLOG_SLUG}/page`),
         component: blogTemplate,
       })
     })

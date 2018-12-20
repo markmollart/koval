@@ -9,7 +9,8 @@
     "react/prop-types": "off",
     "react/no-danger": "off",
     "react/forbid-prop-types": "off",
-    "arrow-body-style": "off"
+    "arrow-body-style": "off",
+    "no-console": 0
   },
   "settings": {
     "import/core-modules": []

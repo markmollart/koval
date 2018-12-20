@@ -19,17 +19,15 @@ const {
 
 // Robots txt warning on build
 if (IS_STAGING && NODE_ENV !== 'development') {
-  // eslint-disable-next-line
-  console.log("\x1b[41m" , 'blocking search engines, change IS_STAGING env variable to prevent this');
+  console.log("\x1b[41m%s\x1b[0m" , 'blocking search engines, change IS_STAGING env variable to prevent this');
 }
 if (!IS_STAGING && NODE_ENV !== 'development') {
-  // eslint-disable-next-line
-  console.log("\x1b[42m" , 'visible to search engines, change IS_STAGING env variable to prevent this');
+  console.log("\x1b[42m%s\x1b[0m" , 'visible to search engines, change IS_STAGING env variable to prevent this');
 }
 
 if (GATSBY_CMD !== 'serve') {
   // Env variable check
-  const requiredEnvVariables = ['BASE_URL', 'WORDPRESS_URL', 'WORDPRESS_PROTOCOL', 'JWT_USER', 'JWT_PASSWORD'];
+  const requiredEnvVariables = ['BASE_URL', 'WORDPRESS_URL', 'HOME_SLUG', 'WORDPRESS_PROTOCOL', 'JWT_USER', 'JWT_PASSWORD'];
   requiredEnvVariables.map((item) => {
     if (!process.env[item]) {
       throw Error(`Set ${item} env variable`);
