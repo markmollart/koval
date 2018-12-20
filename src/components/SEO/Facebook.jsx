@@ -19,7 +19,10 @@ Facebook.propTypes = {
   type: PropTypes.string,
   title: PropTypes.string,
   desc: PropTypes.string,
-  image: PropTypes.string,
+  image: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool
+  ]),
 };
 
 Facebook.defaultProps = {

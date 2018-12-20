@@ -1,14 +1,38 @@
 import React from 'react';
+import { StaticQuery, graphql } from 'gatsby';
+import { getComponentData } from './utils';
 
-// eslint-disable-next-line
 export const IntroSection = (props) => {
-  const { title, subtitle } = props;
+  const { id } = props;
   return (
-    <section className="intro-section">
-      <div className="wrap">
-        <h1>{title}</h1>
-        <h2>{subtitle}</h2>
-      </div>
-    </section>
+    <StaticQuery
+      query={graphql`
+        query {
+          allIntroSections: allWordPressAcfIntroSection {
+            edges {
+              node {
+                id,
+                title,
+                subtitle,
+              }
+            }
+          },
+        }
+      `}
+      render={data => {
+        const { allIntroSections } = data;
+        const introSection = getComponentData(allIntroSections, id);
+        if (!introSection) return null;
+        const { title, subtitle } = introSection;
+        return (
+          <section className="intro-section">
+            <div className="wrap">
+              <h1>{title}</h1>
+              <h2>{subtitle}</h2>
+            </div>
+          </section>
+        )
+      }}
+    />
   );
 }

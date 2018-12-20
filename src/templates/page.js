@@ -2,7 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
+import * as AcfLayout from '../acf';
 import SEO from '../components/SEO';
+
+const AcfComponent = ({ location, id, componentName }) => {
+  const ComponentName = AcfLayout[componentName];
+  return (
+    <ComponentName
+      location={location}
+      id={id}
+    />
+  );
+};
 
 export const PageTemplate = ({ title, content }) => {
   return (
@@ -31,9 +42,9 @@ PageTemplate.propTypes = {
   content: PropTypes.string,
 }
 
-const Page = ({ data }) => {
+const Page = ({ data, location }) => {
   const { wordpressPage: page, site } = data;
-  const { title, content, yoast } = page;
+  const { title, content, yoast, acf: { layout } } = page;
   const { title: siteTitle } = site.siteMetadata;
   return (
     <Layout>
@@ -41,7 +52,19 @@ const Page = ({ data }) => {
         title={`${yoast.metaTitle || title} | ${siteTitle}`}
         desc={yoast.metaDescription}
       />
+      {layout ? layout.map(item => {
+        const layoutComponentName = item.name.replace('WordPressAcf_','');
+        return (
+          <AcfComponent
+            key={item.id}
+            id={item.id}
+            componentName={layoutComponentName}
+            location={location}
+          />
+        );
+      }) :
       <PageTemplate title={title} content={content} />
+    }
     </Layout>
   )
 }
@@ -65,6 +88,12 @@ export const pageQuery = graphql`
       yoast {
         metaTitle: title,
         metaDescription: metadesc
+      }
+      acf {
+        layout: layout_page {
+          name: __typename,
+          id
+        }
       }
     }
   }
