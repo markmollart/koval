@@ -8,7 +8,8 @@ const { paginate } = require('gatsby-awesome-pagination');
 
 const getOnlyPublished = edges => edges.filter(({ node }) => node.status === 'publish');
 
-const { BLOG_SLUG, HOME_SLUG } = process.env;
+const { WORDPRESS_PROTOCOL, WORDPRESS_URL, BLOG_SLUG, HOME_SLUG } = process.env;
+const wordPressUrl = `${WORDPRESS_PROTOCOL}://${WORDPRESS_URL}`;
 
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
@@ -19,6 +20,7 @@ exports.createPages = ({ actions, graphql }) => {
         edges {
           node {
             id
+            link
             slug
             status
           }
@@ -49,8 +51,9 @@ exports.createPages = ({ actions, graphql }) => {
       }
       // Call `createPage()` once per WordPress page
       pages.forEach(({ node: page }) => {
+        const splat = page.link.replace(wordPressUrl, '');
         createPage({
-          path: page.slug === HOME_SLUG ? '/' : `/${page.slug}/`,
+          path: splat,
           component: pageTemplate,
           context: {
             id: page.id,
@@ -113,11 +116,12 @@ exports.createPages = ({ actions, graphql }) => {
     .then(() => {
       return graphql(`
         {
-          allWordpressCategory(filter: { count: { gt: 0 } }) {
+          allWordpressCategory {
             edges {
               node {
                 id
                 name
+                link
                 slug
               }
             }
@@ -135,8 +139,9 @@ exports.createPages = ({ actions, graphql }) => {
 
       // Create a Gatsby page for each WordPress Category
       result.data.allWordpressCategory.edges.forEach(({ node: cat }) => {
+        const splat = cat.link.replace(wordPressUrl, '');
         createPage({
-          path: `/categories/${cat.slug}/`,
+          path: splat,
           component: categoriesTemplate,
           context: {
             name: cat.name,

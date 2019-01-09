@@ -30,7 +30,7 @@ if (GATSBY_CMD !== 'serve') {
   const requiredEnvVariables = ['BASE_URL', 'WORDPRESS_URL', 'HOME_SLUG', 'WORDPRESS_PROTOCOL', 'JWT_USER', 'JWT_PASSWORD'];
   requiredEnvVariables.map((item) => {
     if (!process.env[item]) {
-      throw Error(`Set ${item} env variable`);
+      throw Error(`Set ${item} env variable, ensure you have created .env.development and .env.production based on .env.template`);
     }
     return null;
   });
