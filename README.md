@@ -9,6 +9,7 @@ This starter is forked from the [gatsby-starter-netlify-cms](https://github.com/
 ### Known Limitations
 
 * Your WordPress site must have at least 1 post, or the starter will crash
+* If using ACF flexible content fields, each field must exist somewhere on your site. Otherwise create a dummy page containing all flexible content fields
 
 ## Features
 
