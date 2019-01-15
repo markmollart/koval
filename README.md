@@ -31,4 +31,3 @@ This starter is forked from the [gatsby-starter-netlify-cms](https://github.com/
 - Offline Support
 - WebApp Manifest Support
 - Brotli compression
-- CSS processing using [gatsby-plugin-purgecss](https://www.gatsbyjs.org/packages/gatsby-plugin-purgecss/)
