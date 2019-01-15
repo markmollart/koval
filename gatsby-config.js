@@ -14,7 +14,8 @@ const {
   PWA_SHORT_NAME = 'Koval',
   PWA_BACKGROUND_COLOR = '#000000',
   PWA_THEME_COLOR = '#000000',
-  gatsby_executing_command: GATSBY_CMD
+  gatsby_executing_command: GATSBY_CMD,
+  USE_ANALSYER
 } = process.env;
 
 // Robots txt warning on build
@@ -129,7 +130,6 @@ module.exports = {
     },
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
-    'gatsby-plugin-purgecss',
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
@@ -142,8 +142,17 @@ module.exports = {
         icon: 'src/images/logo.png',
       },
     },
+    {
+      resolve: 'gatsby-plugin-webpack-bundle-analyzer',
+      options: {
+          analyzerPort: NODE_ENV === 'development' ? 8002 : 9002,
+          production: true,
+          disable: !USE_ANALSYER
+      },
+    },
     'gatsby-plugin-offline',
     'gatsby-plugin-brotli',
+    'gatsby-plugin-netlify-cache',
     'gatsby-plugin-netlify', // make sure to keep it last in the array
   ],
 }

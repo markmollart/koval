@@ -12,7 +12,8 @@
     "react/no-array-index-key": 0,
     "import/prefer-default-export": "off",
     "arrow-body-style": "off",
-    "no-console": 0
+    "no-console": 0,
+    "no-underscore-dangle": 0
   },
   "settings": {
     "import/core-modules": []

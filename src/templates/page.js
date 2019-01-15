@@ -5,12 +5,12 @@ import Layout from '../components/Layout';
 import * as AcfLayout from '../acf';
 import SEO from '../components/SEO';
 
-const AcfComponent = ({ location, id, componentName }) => {
+const AcfComponent = ({ location, componentName, item }) => {
   const ComponentName = AcfLayout[componentName];
   return (
     <ComponentName
       location={location}
-      id={id}
+      {...item}
     />
   );
 };
@@ -54,12 +54,13 @@ const Page = ({ data, location }) => {
         desc={yoast.metaDescription}
       />
       {layout ? layout.map(item => {
-        const layoutComponentName = item.name.replace('WordPressAcf_','');
+        if (!item.__typename) return null;
+        const layoutComponentName = item.__typename.replace('WordPressAcf_','');
         return (
           <AcfComponent
             key={item.id}
-            id={item.id}
             componentName={layoutComponentName}
+            item={item}
             location={location}
           />
         );
@@ -92,8 +93,12 @@ export const pageQuery = graphql`
       }
       acf {
         layout: layout_page {
-          name: __typename,
-          id
+          __typename,
+          ... on WordPressAcf_IntroSection {
+            id,
+            title,
+            subtitle
+          }
         }
       }
     }
