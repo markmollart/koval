@@ -15,7 +15,7 @@ const {
   PWA_BACKGROUND_COLOR = '#000000',
   PWA_THEME_COLOR = '#000000',
   gatsby_executing_command: GATSBY_CMD,
-  USE_ANALSYER
+  USE_ANALYSER
 } = process.env;
 
 // Robots txt warning on build
@@ -147,7 +147,7 @@ module.exports = {
       options: {
           analyzerPort: NODE_ENV === 'development' ? 8002 : 9002,
           production: true,
-          disable: !USE_ANALSYER
+          disable: !USE_ANALYSER || USE_ANALYSER === 'false'
       },
     },
     'gatsby-plugin-offline',
