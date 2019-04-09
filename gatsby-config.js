@@ -70,6 +70,7 @@ module.exports = {
         },
         // Set to true to debug endpoints on 'gatsby build'
         verboseOutput: false,
+        // Add custom taxonomy routes & custom post type routes here
         includedRoutes: [
           "/*/*/posts",
           "/*/*/pages",
