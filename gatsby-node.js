@@ -23,6 +23,11 @@ exports.createPages = ({ actions, graphql }) => {
             link
             slug
             status
+            acf {
+              layout: layout_page {
+                __typename
+              }
+            }
           }
         }
       }
@@ -52,13 +57,16 @@ exports.createPages = ({ actions, graphql }) => {
       // Call `createPage()` once per WordPress page
       pages.forEach(({ node: page }) => {
         const splat = page.link.replace(wordPressUrl, '');
-        createPage({
-          path: splat,
-          component: pageTemplate,
-          context: {
-            id: page.id,
-          },
-        })
+        // Only create the page if it contains ACF components
+        if (page.acf !== null) {
+          createPage({
+            path: splat,
+            component: pageTemplate,
+            context: {
+              id: page.id,
+            },
+          })
+        }
       })
     })
     .then(() => {
@@ -146,38 +154,6 @@ exports.createPages = ({ actions, graphql }) => {
           context: {
             name: cat.name,
             slug: cat.slug,
-          },
-        })
-      })
-    })
-    .then(() => {
-      return graphql(`
-        {
-          allWordpressWpUsers {
-            edges {
-              node {
-                id
-                slug
-              }
-            }
-          }
-        }
-      `)
-    })
-    .then(result => {
-      if (result.errors) {
-        result.errors.forEach(e => console.error(e.toString()))
-        return Promise.reject(result.errors)
-      }
-
-      const authorTemplate = path.resolve(`./src/templates/author.js`)
-
-      result.data.allWordpressWpUsers.edges.forEach(({ node: author }) => {
-        createPage({
-          path: `/author/${author.slug}`,
-          component: authorTemplate,
-          context: {
-            id: author.id,
           },
         })
       })
