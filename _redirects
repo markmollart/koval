@@ -1,3 +1,0 @@
-# Netlify redirects
-http://musing-clarke-b097bd.netlify.com/* http://capitalpartners.birdbrain.io/:splat 301!
-/home https://capitalpartners.birdbrain.io/ 301

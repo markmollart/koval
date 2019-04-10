@@ -5,6 +5,16 @@ import * as AcfLayout from '../acf';
 import SEO from '../components/SEO';
 
 const AcfComponent = ({ location, componentName, item }) => {
+  // If component does not exist in acf folder, print error message
+  if (!(componentName in AcfLayout)) {
+    return (
+      <div className="wrapper">
+        {`Error: Component does not exist. `}
+        {`Please create component "${componentName}.jsx" in src/acf folder `}
+        {`and add export to src/acf/index.js`}
+      </div>
+    );
+  }
   const ComponentName = AcfLayout[componentName];
   return (
     <ComponentName
