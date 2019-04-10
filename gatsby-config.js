@@ -2,6 +2,10 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
+const website = require('./config/website');
+
+const pathPrefix = website.pathPrefix === '/' ? '' : website.pathPrefix;
+
 const {
   NODE_ENV,
   IS_STAGING,
@@ -10,10 +14,6 @@ const {
   WORDPRESS_PROTOCOL,
   JWT_USER,
   JWT_PASSWORD,
-  SITE_NAME = 'Koval - Gatsby Wordpress',
-  PWA_SHORT_NAME = 'Koval',
-  PWA_BACKGROUND_COLOR = '#000000',
-  PWA_THEME_COLOR = '#000000',
   gatsby_executing_command: GATSBY_CMD,
   USE_ANALYSER
 } = process.env;
@@ -38,9 +38,21 @@ if (GATSBY_CMD !== 'serve') {
 }
 
 module.exports = {
+  /* General Information */
+  pathPrefix: website.pathPrefix,
   siteMetadata: {
-    title: SITE_NAME,
-    siteUrl: BASE_URL
+    siteUrl: BASE_URL + pathPrefix,
+    pathPrefix,
+    title: website.title,
+    description: website.description,
+    banner: website.banner,
+    headline: website.headline,
+    siteLanguage: website.siteLanguage,
+    ogLanguage: website.ogLanguage,
+    author: website.author,
+    twitter: website.twitter,
+    facebook: website.facebook,
+    pwaShortName: website.shortName,
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -134,13 +146,14 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        name: SITE_NAME,
-        short_name: PWA_SHORT_NAME,
-        start_url: '/',
-        background_color: PWA_BACKGROUND_COLOR,
-        theme_color: PWA_THEME_COLOR,
+        name: website.title,
+        short_name: website.shortName,
+        description: website.description,
+        start_url: pathPrefix,
+        background_color: website.backgroundColor,
+        theme_color: website.themeColor,
         display: 'standalone',
-        icon: 'src/images/logo.png',
+        icon: website.favicon,
       },
     },
     {

@@ -9,37 +9,39 @@ import { Twitter } from './SEO/Twitter';
 export default class SEO extends Component {
   render() {
     const { title, desc, banner, post } = this.props;
-    const { BASE_URL: siteUrl, PWA_SHORT_NAME: shortName } = process.env;
     return (
       <StaticQuery
         query={graphql`
           query {
-            seoSettings: wordpressAcfOptions(options: { }) {
-              options {
-                defaultMetaTitle,
-                defaultMetaDescription,
-                openGraphImage,
-                logo,
-                twitterUsername
+            site {
+              siteMetadata {
+                siteUrl
+                defaultTitle: title
+                defaultDescription: description
+                defaultBanner: banner
+                siteLanguage
+                twitter
+                pwaShortName
               }
             }
           }
         `}
         render={({
-          seoSettings: {
-            options: {
-              defaultMetaTitle,
-              defaultMetaDescription,
-              siteLanguage = 'en',
+          site: {
+            siteMetadata: {
+              siteUrl,
+              defaultTitle,
+              defaultDescription,
+              defaultBanner,
+              siteLanguage,
               twitter,
-              logo,
-              openGraphImage: defaultBanner
-            },
-          },
+              pwaShortName,
+            }
+          }
         }) => {
           const seo = {
-            title: title || defaultMetaTitle,
-            description: desc || defaultMetaDescription,
+            title: title || defaultTitle,
+            description: desc || defaultDescription,
             image: banner || defaultBanner,
             url: `${siteUrl}`,
           };
@@ -51,7 +53,7 @@ export default class SEO extends Component {
               '@type': 'WebSite',
               '@id': siteUrl,
               url: siteUrl,
-              name: defaultMetaTitle,
+              name: defaultTitle,
             },
           ];
 
@@ -73,14 +75,14 @@ export default class SEO extends Component {
                 dateModified: post.data,
                 author: {
                   '@type': 'Person',
-                  name: post.author || defaultMetaTitle,
+                  name: post.author || defaultTitle,
                 },
                 publisher: {
                   '@type': 'Organization',
-                  name: post.author || defaultMetaTitle,
+                  name: post.author || defaultTitle,
                   logo: {
                     '@type': 'ImageObject',
-                    url: logo,
+                    url: `${siteUrl}/logos/logo-1200x630.jpg`,
                   },
                 },
                 isPartOf: siteUrl,
@@ -98,8 +100,8 @@ export default class SEO extends Component {
                 <html lang={siteLanguage} />
                 <meta name="description" content={seo.description} />
                 <meta name="image" content={seo.image} />
-                <meta name="apple-mobile-web-app-title" content={shortName} />
-                <meta name="application-name" content={shortName} />
+                <meta name="apple-mobile-web-app-title" content={pwaShortName} />
+                <meta name="application-name" content={pwaShortName} />
                 <script type="application/ld+json">{JSON.stringify(schemaOrgJSONLD)}</script>
               </Helmet>
               <Facebook
