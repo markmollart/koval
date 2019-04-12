@@ -1,0 +1,23 @@
+/*=============================================>>>>>
+= Common =
+===============================================>>>>>*/
+$wrapper-width: 1300px;
+
+.wrapper {
+  width: 100%;
+  max-width: $wrapper-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
+}
+
+body {
+  position: relative;
+  width: 100%;
+  // Prevent background scroll when navigation is open
+  &.nav-open {
+    position: fixed;
+    width: 100%;
+    overflow: hidden;
+  }
+}
